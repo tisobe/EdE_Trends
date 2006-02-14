@@ -1,0 +1,8 @@
+source /home/mta/.ascrc
+
+cd /data/mta/Script/Grating/Exc
+rm -rf param
+mkdir param
+
+perl /data/mta/MTA/bin/ede_main.perl
+
