@@ -270,7 +270,7 @@ foreach $msid (@list){
 	
 		$out_plot = "$out_dir/".'hrma_'."$tot_cnt".'.gif';
 	
-		system("echo ''|gs -sDEVICE=ppmraw  -r256x256 -q -NOPAUSE -sOutputFile=-  ./pgplot.ps|$bi_dir/pnmcrop| $bi_dir/pnmflip -r270 |$bi_dir/ppmtogif > $out_plot");
+		system("echo ''|gs -sDEVICE=ppmraw  -r256x256 -q -NOPAUSE -sOutputFile=-  ./pgplot.ps|$bin_dir/pnmcrop| $bin_dir/pnmflip -r270 |$bin_dir/ppmtogif > $out_plot");
 		system("rm pgplot.ps");
 	}else{
 		$plt_cnt++;
