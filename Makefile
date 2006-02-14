@@ -5,7 +5,7 @@ TASK = EdE_Trends
 
 include /data/mta/MTA/include/Makefile.MTA
 
-BIN  = ede_comp_stat.perl ede_find_value.perl ede_hrma.perl ede_main.perl ede_mk_stat_table.perl ede_oba.perl ede_oba_example.perl ede_plot.perl ede_sort_dom.perl ede_wrap_scrpt ede_main_script
+BIN  = ede_comp_stat.perl ede_find_value.perl ede_hrma.perl ede_main.perl ede_mk_stat_table.perl ede_oba.perl ede_oba_example.perl ede_plot.perl ede_sort_dom.perl ede_wrap_script ede_main_script
 
 DOC  = README
 
