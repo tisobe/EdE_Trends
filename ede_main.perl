@@ -169,7 +169,7 @@ system("mv stat_out.html $web_dir/HRMA/hrc_ltg_stat2.html");
 #--- plotting oba example
 #
 
-system("perl ede_oba_example");
+system("perl $bin_dir/ede_oba_example.perl");
 system("mv oba_example.gif $web_dir/EdE_Plots/");
 
 #
