@@ -20,6 +20,8 @@ use PGPLOT;
 $file   = $ARGV[0];		# data file name
 $energy = $ARGV[1];		# the line energy
 
+$bin_dir = '/data/mta4/MTA/bin/';
+
 open(FH, "$file");
 @date = ();
 @data = ();
@@ -153,7 +155,7 @@ pgclos();
 
 $out_plot = $file;
 $out_plot =~ s/_data/_plot.gif/g;
-system("echo ''|gs -sDEVICE=ppmraw  -r256x256 -q -NOPAUSE -sOutputFile=-  ./pgplot.ps|pnmcrop|pnmflip -r270 |ppmtogif > $out_plot");
+system("echo ''|gs -sDEVICE=ppmraw  -r256x256 -q -NOPAUSE -sOutputFile=-  ./pgplot.ps|$bin_dir/pnmcrop|$bin_dir/pnmflip -r270 |$bin_dir/ppmtogif > $out_plot");
 system("rm pgplot.ps");
 
 
