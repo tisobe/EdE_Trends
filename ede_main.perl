@@ -14,7 +14,7 @@
 #
 #----- set directories
 #
-$bin_dir = '/data/mta/MTA/bin/';
+$bin_dir = '/data/mta4/MTA/bin/';
 $web_dir = '/data/mta_www/mta_grat/EdE_trend/';
 #
 #---- set line selections 

@@ -1,6 +1,8 @@
 
 Scripts in this directory create an E/dE trend page plots, table, and the page itself.
 
+This job must be run on "rhodes", since it needs to access to dataseeker
+
 In a directory of /data/mta/Script/Grating/EdE_Trends:
 
 ---------------
@@ -155,7 +157,7 @@ Directories and files outside of this directory
 
 /data/mta/Script/Grating/Exc:		run directory
 
-$bin_dir = '/data/mta/MTA/bin/';		bin directory
+$bin_dir = '/data/mta4/MTA/bin/';		bin directory	 (need to run on rhodes)
 $web_dir = '/data/mta_www/mta_grat/EdE_trend/';	Web direcotry
 			---- these two directories can be changed in ede_main.perl
 
@@ -206,5 +208,5 @@ $web_dir/Template			keeps copies of html pages, just in a case the others are lo
 Cron Job
 ---------
 
-0 9 * * 0    cd /data/mta/Script/Grating/Exc; /data/mta/MTA/bin/ede_wrap_script      
-	run every Sunday morning 9am
+0 9 * * 0    cd /data/mta4/Script/Grating/Exc; /data/mta/MTA/bin/ede_wrap_script      
+	run every Sunday morning 9am on rhodes

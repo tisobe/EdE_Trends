@@ -4,5 +4,5 @@ cd /data/mta/Script/Grating/Exc
 rm -rf param
 mkdir param
 
-perl /data/mta/MTA/bin/ede_main.perl
+perl /data/mta4/MTA/bin/ede_main.perl
 
