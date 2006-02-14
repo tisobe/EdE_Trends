@@ -11,9 +11,12 @@ use PGPLOT;
 #											#
 #########################################################################################
 
+$bin_dir = '/data/mta/MTA/bin/';
+
 #
 #--- only one file to open; change a directory path, if the data location moved
 #
+
 open(FH, "/data/mta_www/mta_grat/EdE_trend/OBA/ACIS_MTG_1022/oobthr53_out");
 while(<FH>){
        	chomp $_;
@@ -105,7 +108,7 @@ pgclos();
 
 $out_plot = "oba_example.gif";
 
-system("echo ''|gs -sDEVICE=ppmraw  -r256x256 -q -NOPAUSE -sOutputFile=-  ./pgplot.ps|pnmcrop| pnmflip -r270 |ppmtogif > $out_plot");
+system("echo ''|gs -sDEVICE=ppmraw  -r256x256 -q -NOPAUSE -sOutputFile=-  ./pgplot.ps|$bin_dir/pnmcrop| $bin_dir/pnmflip -r270 |$bin_dir/ppmtogif > $out_plot");
 system("rm pgplot.ps");
 
 ############################################################

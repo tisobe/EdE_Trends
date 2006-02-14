@@ -13,6 +13,9 @@ use PGPLOT;
 
 $file    = $ARGV[0];		# E/dE data file name
 $out_dir = $ARGV[1];		# output directory name
+
+$bin_dir = '/data/mta/MTA/bin'	# for ppmtogif etc
+
 chomp $file;
 chomp $out_dir;
 
@@ -267,7 +270,7 @@ foreach $msid (@list){
 	
 		$out_plot = "$out_dir/".'hrma_'."$tot_cnt".'.gif';
 	
-		system("echo ''|gs -sDEVICE=ppmraw  -r256x256 -q -NOPAUSE -sOutputFile=-  ./pgplot.ps|pnmcrop| pnmflip -r270 |ppmtogif > $out_plot");
+		system("echo ''|gs -sDEVICE=ppmraw  -r256x256 -q -NOPAUSE -sOutputFile=-  ./pgplot.ps|$bin_dir/pnmcrop| $bin_dir/pnmflip -r270 |$bin_dir/ppmtogif > $out_plot");
 		system("rm pgplot.ps");
 	}else{
 		$plt_cnt++;

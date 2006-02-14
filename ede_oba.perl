@@ -16,6 +16,8 @@ $out_dir = $ARGV[1];		# OBA data directory
 chomp $file;
 chomp $out_dir;
 
+$bin_dir = '/data/mta/MTA/bin';
+
 @time   = ();
 @dom    = ();
 @obsid  = ();
@@ -268,7 +270,7 @@ for($obaj = 1; $obaj < 65; $obaj++){
 	
 		$out_plot = "$out_dir/".'oba_'."$tot_cnt".'.gif';
 	
-		system("echo ''|gs -sDEVICE=ppmraw  -r256x256 -q -NOPAUSE -sOutputFile=-  ./pgplot.ps|pnmcrop| pnmflip -r270 |ppmtogif > $out_plot");
+		system("echo ''|gs -sDEVICE=ppmraw  -r256x256 -q -NOPAUSE -sOutputFile=-  ./pgplot.ps|$bin_dir/pnmcrop| $bin_dir/pnmflip -r270 |$bin_dir/ppmtogif > $out_plot");
 		system("rm pgplot.ps");
 	}else{
 		$plt_cnt++;
