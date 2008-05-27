@@ -1,8 +1,17 @@
 source /home/mta/.ascrc
 
-cd /data/mta/Script/Grating/Exc
+cd /data/mta/Script/Grating/EdE/Exc
 rm -rf param
 mkdir param
+
+rm -rf param
+mkdir param
+
+urce /home/mta/bin/reset_param
+setenv PFILES "${PDIRS}:${SYSPFILES}"
+set path = (/home/ascds/DS.release/bin/  $path)
+set path = (/home/ascds/DS.release/otsbin/  $path)
+
 
 perl /data/mta4/MTA/bin/ede_main.perl
 
