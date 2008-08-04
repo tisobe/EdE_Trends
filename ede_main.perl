@@ -6,7 +6,7 @@
 #											#
 #	author: t. isobe (tisobe@cfa.harvard.edu)					#
 #											#
-#	last update: Feb 14, 2006							#
+#	last update: Aug 04, 2008							#
 #											#
 #########################################################################################
 
@@ -57,7 +57,7 @@ foreach $line (@htg_list){
 	$nline =~ s/\.//g;
 	$data_file = "$web_dir".'/EdE_Data/acis_htg_'."$nline".'_data';
 
-	system("perl $bin_dir/ede_find_value.perl $line $grat $data_file");	# get data
+	system("/proj/DS.ots/perl-5.10.0.SunOS5.8/bin/perl $bin_dir/ede_find_value.perl $line $grat $data_file");	# get data
 	system("perl $bin_dir/ede_plot.perl $data_file $line");			# plot time - ede relation
 	system("perl $bin_dir/ede_comp_stat.perl $data_file $line");		# compute correlation prob
 }
@@ -90,7 +90,7 @@ foreach $line (@mtg_list){
 	$nline = $line;
 	$nline =~ s/\.//g;
 	$data_file = "$web_dir".'/EdE_Data/acis_mtg_'."$nline".'_data';
-	system("perl $bin_dir/ede_find_value.perl $line $grat $data_file");
+	system("/proj/DS.ots/perl-5.10.0.SunOS5.8/bin/perl $bin_dir/ede_find_value.perl $line $grat $data_file");
 	system("perl $bin_dir/ede_plot.perl $data_file $line");
 	system("perl $bin_dir/ede_comp_stat.perl $data_file $line");
 }
@@ -123,7 +123,7 @@ foreach $line (@ltg_list){
 	$nline = $line;
 	$nline =~ s/\.//g;
 	$data_file = "$web_dir".'/EdE_Data/hrc_ltg_'."$nline".'_data';
-	system("perl $bin_dir/ede_find_value.perl $line $grat $data_file");
+	system("/proj/DS.ots/perl-5.10.0.SunOS5.8/bin/perl $bin_dir/ede_find_value.perl $line $grat $data_file");
 	system("perl $bin_dir/ede_plot.perl $data_file $line");
 	system("perl $bin_dir/ede_comp_stat.perl $data_file $line");
 }
