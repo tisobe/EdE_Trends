@@ -13,5 +13,5 @@ set path = (/home/ascds/DS.release/bin/  $path)
 set path = (/home/ascds/DS.release/otsbin/  $path)
 
 
-perl /data/mta4/MTA/bin/ede_main.perl
+/opt/local/bin/perl /data/mta4/MTA/bin/ede_main.perl
 
