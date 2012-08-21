@@ -7,16 +7,28 @@ use PGPLOT;
 #											#
 #	author: t. isobe (tisobe@cfa.harvard.edu)					#
 #											#
-#	last update: Feb 14, 2006							#
+#	last update: Aug 21, 2012							#
 #											#
 #########################################################################################
 
-$bin_dir = '/data/mta4/MTA/bin/';
+#----------------------------------------------------------------------------
+#
+#---- setting directories
+#
+open(FH, "/data/mta/Script/Grating/EdE/house_keeping/dir_list");
+while(<FH>){
+    chomp $_;
+    @atemp = split(/\s+/, $_);
+    ${$atemp[0]} = $atemp[1];
+}
+close(FH);
+#----------------------------------------------------------------------------
+
 #
 #--- only one file to open; change a directory path, if the data location moved
 #
 
-open(FH, "/data/mta_www/mta_grat/EdE_trend/OBA/ACIS_MTG_1022/oobthr53_out");
+open(FH, "$web_dir/OBA/ACIS_MTG_1022/oobthr53_out");
 while(<FH>){
        	chomp $_;
        	@atemp = split(/\s+/, $_);
@@ -107,7 +119,7 @@ pgclos();
 
 $out_plot = "oba_example.gif";
 
-system("echo ''|gs -sDEVICE=ppmraw  -r256x256 -q -NOPAUSE -sOutputFile=-  ./pgplot.ps|$bin_dir/pnmcrop| $bin_dir/pnmflip -r270 |$bin_dir/ppmtogif > $out_plot");
+system("echo ''|$op_dir/gs -sDEVICE=ppmraw  -r256x256 -q -NOPAUSE -sOutputFile=-  ./pgplot.ps|$op_dir/pnmcrop| $op_dir/pnmflip -r270 |$op_dir/ppmtogif > $out_plot");
 system("rm pgplot.ps");
 
 ############################################################

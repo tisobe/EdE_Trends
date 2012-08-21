@@ -13,14 +13,26 @@ use PGPLOT;
 #														#
 #	author: t. isobe (tisobe@cfa.harvard.edu)								#
 #														#
-#	last update: Feb 14, 2006										#
+#	last update: Aug 21, 2012										#
 #														#
 #################################################################################################################
+
+#-------------------------------------------------------------------------
+#
+#---- setting directories
+#
+open(FH, "/data/mta/Script/Grating/EdE/house_keeping/dir_list");
+while(<FH>){
+    chomp $_;
+    @atemp = split(/\s+/, $_);
+    ${$atemp[0]} = $atemp[1];
+}
+close(FH);
+#-------------------------------------------------------------------------
 
 $file   = $ARGV[0];		# data file name
 $energy = $ARGV[1];		# the line energy
 
-$bin_dir = '/data/mta4/MTA/bin/';
 
 open(FH, "$file");
 @date = ();
@@ -155,7 +167,7 @@ pgclos();
 
 $out_plot = $file;
 $out_plot =~ s/_data/_plot.gif/g;
-system("echo ''|gs -sDEVICE=ppmraw  -r256x256 -q -NOPAUSE -sOutputFile=-  ./pgplot.ps|$bin_dir/pnmcrop|$bin_dir/pnmflip -r270 |$bin_dir/ppmtogif > $out_plot");
+system("echo ''|$op_dir/gs -sDEVICE=ppmraw  -r256x256 -q -NOPAUSE -sOutputFile=-  ./pgplot.ps|$op_dir/pnmcrop|$op_dir/pnmflip -r270 |$op_dir/ppmtogif > $out_plot");
 system("rm pgplot.ps");
 
 

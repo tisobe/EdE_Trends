@@ -1,6 +1,6 @@
-#!/proj/DS.ots/perl-5.10.0.SunOS5.8/bin/perl
+#!/usr/local/bin/perl
  
-BEGIN { $ENV{'SYBASE'} = "/soft/SYBASE_OCS15"; }
+###### BEGIN { $ENV{'SYBASE'} = "/soft/SYBASE_OCS15"; }
 use DBI;
 use DBD::Sybase;
 
@@ -10,9 +10,23 @@ use DBD::Sybase;
 #											#
 #	author:	t. isobe (tisobe@cfa.harvard.edu)					#
 #											#
-#	last update: May 20, 2008							#
+#	last update: Aug 21, 2012							#
 #											#
 #########################################################################################
+
+#----------------
+#--- read directory lists
+#
+
+open(FH, "/data/mta/Script/Grating/EdE/house_keeping/dir_list");
+while(<FH>){
+    chomp $_;
+    @atemp = split(/\s+/, $_);
+    ${$atemp[0]} = $atemp[1];
+}
+close(FH);
+
+#-----------------------
 
 $line  = $ARGV[0];		# such as 1.022. 1.02 gives more data, but include 1.019< line < 1.03
 $grat  = $ARGV[1];		# htg, mtg, or ltg

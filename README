@@ -157,7 +157,7 @@ Directories and files outside of this directory
 
 /data/mta/Script/Grating/Exc:		run directory
 
-$bin_dir = '/data/mta4/MTA/bin/';		bin directory	 (need to run on rhodes)
+$bin_dir = '/data/mta/MTA/bin/';		bin directory	 (need to run on rhodes)
 $web_dir = '/data/mta_www/mta_grat/EdE_trend/';	Web direcotry
 			---- these two directories can be changed in ede_main.perl
 
@@ -208,5 +208,5 @@ $web_dir/Template			keeps copies of html pages, just in a case the others are lo
 Cron Job
 ---------
 
-0 9 * * 0    cd /data/mta4/Script/Grating/Exc; /data/mta/MTA/bin/ede_wrap_script      
-	run every Sunday morning 9am on rhodes
+0 9 * * 0    cd /data/mta/Script/Grating/Exc; /data/mta/MTA/bin/ede_wrap_script      
+	run every Sunday morning 9am on r2d2
