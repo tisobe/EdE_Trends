@@ -7,7 +7,7 @@ use PGPLOT;
 #											#
 #	author: t. isobe (tisobe@cfa.harvard.edu)					#
 #											#
-#	last update: Agu 21, 2012							#
+#	last update: Mar 08, 2013							#
 #											#
 #########################################################################################
 
@@ -45,6 +45,9 @@ while(<FH>){
                 next;
         }
         @atemp = split(/\s+/, $_);
+	if($atemp[0] !~ /\d/){
+		next;
+	}
         push(@obsid, $atemp[0]);
         push(@dom, $atemp[10]);
         $tmonth= $atemp[6];
@@ -282,7 +285,7 @@ for($obaj = 1; $obaj < 65; $obaj++){
 	
 		$out_plot = "$out_dir/".'oba_'."$tot_cnt".'.gif';
 	
-		system("echo ''|$op_dir/gs -sDEVICE=ppmraw  -r256x256 -q -NOPAUSE -sOutputFile=-  ./pgplot.ps|$op_dir/pnmcrop| $op_dir/pnmflip -r270 |$op_dir/ppmtogif > $out_plot");
+		system("echo ''|gs -sDEVICE=ppmraw  -r256x256 -q -NOPAUSE -sOutputFile=-  ./pgplot.ps|pnmcrop| pnmflip -r270 |ppmtogif > $out_plot");
 		system("rm pgplot.ps");
 	}else{
 		$plt_cnt++;

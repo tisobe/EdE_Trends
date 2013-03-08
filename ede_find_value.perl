@@ -10,10 +10,22 @@ use DBD::Sybase;
 #											#
 #	author:	t. isobe (tisobe@cfa.harvard.edu)					#
 #											#
-#	last update: Aug 21, 2012							#
+#	last update: Mar 08, 2013							#
 #											#
 #########################################################################################
-
+#
+#--- check whether this is a test case
+#
+OUTER:
+for($i = 0; $i < 10; $i++){
+	if($ARGV[$i] =~ /test/i){
+		$comp_test = 'test';
+		last OUTER;
+	}elsif($ARGV[$i] eq ''){
+		$comp_test = '';
+		last OUTER;
+	}
+}
 #----------------
 #--- read directory lists
 #
@@ -59,16 +71,25 @@ $line4   = $line + 0.002;
 #
 #--- get data from a different database  depending on which grating is used
 #
-
-if($grat =~ /htg/i){
-	system("ls /data/mta/www/mta_grat/*/*/obsid_*_L1.5_S1HEGp1_linelist.txt > temp");
-}elsif($grat =~ /mtg/i){
-	system("ls /data/mta/www/mta_grat/*/*/obsid_*_L1.5_S1MEGp1_linelist.txt > temp");
-}elsif($grat =~ /ltg/i){
-	system("ls /data/mta/www/mta_grat/*/*/obsid_*_L1.5_S1LEGp1_linelist.txt > temp");
+if($comp_test =~ /test/i){
+	if($grat =~ /htg/i){
+		system("cp $house_keeping/Test_prep/htg temp");
+	}elsif($grat =~ /mtg/i){
+		system("cp $house_keeping/Test_prep/mtg temp");
+	}elsif($grat =~ /ltg/i){
+		system("cp $house_keeping/Test_prep/ltg temp");
+	}
 }else{
-	print "Grating choice is wrong. Please try agin\n";
-	exit 1;
+	if($grat =~ /htg/i){
+		system("ls /data/mta/www/mta_grat/*/*/obsid_*_L1.5_S1HEGp1_linelist.txt > temp");
+	}elsif($grat =~ /mtg/i){
+		system("ls /data/mta/www/mta_grat/*/*/obsid_*_L1.5_S1MEGp1_linelist.txt > temp");
+	}elsif($grat =~ /ltg/i){
+		system("ls /data/mta/www/mta_grat/*/*/obsid_*_L1.5_S1LEGp1_linelist.txt > temp");
+	}else{
+		print "Grating choice is wrong. Please try agin\n";
+		exit 1;
+	}
 }
 
 @o_list = ();

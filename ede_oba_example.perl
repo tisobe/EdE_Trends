@@ -7,9 +7,15 @@ use PGPLOT;
 #											#
 #	author: t. isobe (tisobe@cfa.harvard.edu)					#
 #											#
-#	last update: Aug 21, 2012							#
+#	last update: Mar 08, 2013							#
 #											#
 #########################################################################################
+
+#
+#--- check whether this is a test case.
+#
+$comp_test = $ARGV[0];
+chomp $comp_test;
 
 #----------------------------------------------------------------------------
 #
@@ -28,7 +34,11 @@ close(FH);
 #--- only one file to open; change a directory path, if the data location moved
 #
 
-open(FH, "$web_dir/OBA/ACIS_MTG_1022/oobthr53_out");
+if($comp_test =~ /test/i){
+	open(FH, "$test_web_dir/OBA/ACIS_MTG_1022/oobthr53_out");
+}else{
+	open(FH, "$web_dir/OBA/ACIS_MTG_1022/oobthr53_out");
+}
 while(<FH>){
        	chomp $_;
        	@atemp = split(/\s+/, $_);
@@ -119,7 +129,7 @@ pgclos();
 
 $out_plot = "oba_example.gif";
 
-system("echo ''|$op_dir/gs -sDEVICE=ppmraw  -r256x256 -q -NOPAUSE -sOutputFile=-  ./pgplot.ps|$op_dir/pnmcrop| $op_dir/pnmflip -r270 |$op_dir/ppmtogif > $out_plot");
+system("echo ''|gs -sDEVICE=ppmraw  -r256x256 -q -NOPAUSE -sOutputFile=-  ./pgplot.ps|pnmcrop| pnmflip -r270 |ppmtogif > $out_plot");
 system("rm pgplot.ps");
 
 ############################################################

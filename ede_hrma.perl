@@ -7,7 +7,7 @@ use PGPLOT;
 #											#
 #	author: t. isobe (tisobe@cfa.harvard.edu)					#
 #											#
-#	last update: Aug 21, 2012							#
+#	last update: Mar 08, 2013							#
 #											#
 #########################################################################################
 
@@ -282,7 +282,7 @@ foreach $msid (@list){
 	
 		$out_plot = "$out_dir/".'hrma_'."$tot_cnt".'.gif';
 	
-		system("echo ''|$op_dir/gs -sDEVICE=ppmraw  -r256x256 -q -NOPAUSE -sOutputFile=-  ./pgplot.ps|$op_dir/pnmcrop| $op_dir/pnmflip -r270 |$op_dir/ppmtogif > $out_plot");
+		system("echo ''|gs -sDEVICE=ppmraw  -r256x256 -q -NOPAUSE -sOutputFile=-  ./pgplot.ps|pnmcrop| pnmflip -r270 |ppmtogif > $out_plot");
 		system("rm pgplot.ps");
 	}else{
 		$plt_cnt++;
@@ -541,7 +541,6 @@ sub medfit{
 #       Output:         alpha:  intercept                               #
 #                       beta:   slope                                   #
 #                                                                       #
-
 #       sub:            rofunc evaluate SUM( x * sgn(y- a - b * x)      #
 #                       sign   FORTRAN/C sign function                  #
 #                                                                       #

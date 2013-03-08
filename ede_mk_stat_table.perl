@@ -7,25 +7,65 @@
 #											#
 #	author: t. isobe (tisobe@cfa.harvard.edu)					#
 #											#
-#	last update: Feb 14, 2006							#
+#	last update: Mar 08, 2013							#
 #											#
 #########################################################################################
 
-$dir = $ARGV[0];
-chomp $dir;
+#
+#--- check whether this is a test case
+#
+OUTER:
+for($i = 0; $i < 10; $i++){
+	if($ARGV[$i] =~ /test/i){
+		$comp_test = 'test';
+		last OUTER;
+	}elsif($ARGV[$i] eq ''){
+		$comp_test = '';
+		last OUTER;
+	}
+}
+
 #
 #--- input data file names must finish with "_out"
 #
-$infile = `ls $dir/*out`;
-@file_list = split(/\s+/, $infile);
+$dir_list = '/data/mta/Script/Grating/EdE/house_keeping/dir_list';
+open(HF, "$dir_list");
+while(<FH>){
+    chomp $_;
+    @atemp = split(/\s+/, $_);
+    ${$atemp[0]} = ${$atemp[1]}
+}
+close(FH);
 
-open(OUT, ">stat_out.html");
+#
+#--- read which data set: OBA/HRMA or something else
+#
+$dir = $ARGV[0];
+chomp $dir;
+
+if($comp_test =~ /test/i){
+	open(OUT, ">$test_web_dir/stat_out.html");
+}else{
+	open(OUT, ">$web_dir/stat_out.html");
+}
+
 #
 #--- start creating a html table
 #
+print OUT "<!DOCTYPE html>\n";
 print OUT '<html>',"\n";
-print OUT '<head><title>E/dE - Temperature Mean, Slope</title></head>',"\n";
-print OUT '<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="blue" VLINK="teal" ALINK="#FF0000", background="">',"\n";
+print OUT "<head>\n";
+print OUT "<title>E/dE - Temperature Mean, Slope</title>\n";
+print OUT "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />\n";
+print OUT "<style  type='text/css'>\n";
+print OUT "table{text-align:center;margin-left:auto;margin-right:auto;border-style:solid;border-spacing:8px;border-width:2px;border-collapse:separate}\n";
+print OUT "a:link {color:blue;}\n";
+print OUT "a:visited {color:teal;}\n";
+print OUT "</style>\n";
+
+print OUT "</head>\n";
+
+print OUT '<body style="color:#000000 background-color:#FFFFFF">',"\n";
 print OUT '',"\n";
 if($dir =~ /OBA/){
 	print OUT '<h2>Mean OBA Temperatures and Slopes between OBA Temperature and E/dE</h2>',"\n";
@@ -35,8 +75,8 @@ if($dir =~ /OBA/){
 	print OUT '<h2>Mean Temperatures and Slopes between Temperature and E/dE</h2>',"\n";
 }
 
-print OUT '<table border=1, cellpadding=2, cellspacing=2>',"\n";
-print oUT '<tr>';
+print OUT '<table border=1>',"\n";
+print OUT '<tr>';
 print OUT '<th>MSID</th>',"\n";
 print OUT '<th>Temp. Avg</th>',"\n";
 print OUT '<th>Weighted Slope</th>',"\n";
@@ -120,8 +160,9 @@ foreach $file (@file_list){
 }
 
 open(OUT, ">>stat_out.html");
-print OUT '</table>';
-print OUT '</html>';
+print OUT "</table>\n";
+print OUT "</body>\n";
+print OUT "</html>\n";
 close(OUT);
 
 

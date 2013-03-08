@@ -6,9 +6,14 @@
 #											#
 #	author: t. isobe (tisobe@cfa.harvard.edu)					#
 #											#
-#	last update: Aug 21, 2012							#
+#	last update: Mar 08, 2013							#
 #											#
 #########################################################################################
+#
+#--- check whether this is a test case
+#
+$comp_test = $ARGV[0];
+chomp $comp_test;
 
 #####################################################
 #
@@ -31,18 +36,53 @@ close(FH);
 #####################################################
 
 #
+#--- if this is a test, prepare for the test
+#
+
+if($comp_test =~ /test/i){
+	system("mkdir $test_web_dir");
+	system("mkdir $test_web_dir/EdE_Data/");
+	system("mkdir $test_web_dir/EdE_Plots/");
+	system("mkdir $test_web_dir/HRMA/");
+	system("mkdir $test_web_dir/HRMA/ACIS_HTG_1022/");
+	system("mkdir $test_web_dir/HRMA/ACIS_MTG_1022/");
+	system("mkdir $test_web_dir/HRMA/HRC_LTG_1022/");
+	system("mkdir $test_web_dir/OBA/");
+	system("mkdir $test_web_dir/OBA/ACIS_HTG_1022/");
+	system("mkdir $test_web_dir/OBA/ACIS_MTG_1022/");
+	system("mkdir $test_web_dir/OBA/HRC_LTG_1022/");
+
+	system("mkdir $test_data_dir");
+	system("cp $house_keeping/Test_prep/*_data  $test_web_dir/EdE_Data/.");
+
+	$out_dir = $test_web_dir;
+}else{
+	$out_dir = $web_dir;
+}
+
+#
 #---- statistics of time trends are computed by several parts; so first, we just print out the headers
 #---- and statistics themselves are computed by ede_comp_stat.perl
 #
 open(OUT, '>stat_result.html');
+print OUT "<!DOCTYPE html>\n";
 print OUT '<html>',"\n";
-print OUT '<head><title>E/dE Trend Page</title></head>',"\n";
-print OUT '<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="blue" VLINK="teal" ALINK="#FF0000", background="">',"\n";
+print OUT "<head>\n";
+print OUT "<title>E/dE Trend Page</title></head>\n";
+print OUT "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />\n";
+print OUT "<style  type='text/css'>\n";
+print OUT "table{text-align:center;margin-left:auto;margin-right:auto;border-style:solid;border-spacing:8px;border-width:2px;border-collapse:separate}\n";
+print OUT "a:link {color:blue;}\n";
+print OUT "a:visited {color:teal;}\n";
+print OUT "</style>\n";
+print OUT "<head>\n";
+
+print OUT "<body style='color:#000000;background-color:#FFFFFF;'>\n";
 print OUT "\n";
 print OUT '<h2>E/dE Trends Linear Regression Results</h2>',"\n";
 print OUT "\n";
-print OUT '<center>',"\n";
-print OUT '<table border = 1 cellpadding=3 cellspacing=1>',"\n";
+print OUT '<div style="text-align:center;margin-left:auto;margin-right;auto">',"\n";
+print OUT '<table border=1>',"\n";
 print OUT '<tr>',"\n";
 print OUT '<th align="center">Line<br>(keV)</th>',"\n";
 print OUT '<th align="center">Weighted Fit<br></th>',"\n";
@@ -61,23 +101,25 @@ $grat = htg;
 foreach $line (@htg_list){
 	$nline = $line;
 	$nline =~ s/\.//g;
-	$data_file = "$web_dir".'/EdE_Data/acis_htg_'."$nline".'_data';
+	$data_file = "$out_dir".'/EdE_Data/acis_htg_'."$nline".'_data';
 
-	system("$op_dir/perl $bin_dir/ede_find_value.perl $line $grat $data_file");	# get data
-	system("$op_dir/perl $bin_dir/ede_plot.perl $data_file $line");			# plot time - ede relation
-	system("$op_dir/bin/perl $bin_dir/ede_comp_stat.perl $data_file $line");		# compute correlation prob
+	system("perl         $bin_dir/ede_find_value.perl $line $grat $data_file $comp_test");	# get data
+	system("$op_dir/perl $bin_dir/ede_plot.perl       $data_file  $line");			# plot time - ede relation
+	system("perl         $bin_dir/ede_comp_stat.perl  $data_file  $line");			# compute correlation prob
 }
-system("mv $web_dir/EdE_Data/*gif $web_dir/EdE_Plots");
+
+system("mv $out_dir/EdE_Data/*gif $out_dir/EdE_Plots");
+
 #
 #---- acis hetg oba temperature relation plotting starts here
 #
-system("$op_dir/perl $bin_dir/ede_oba.perl $web_dir/EdE_Data/acis_htg_1022_data_new $web_dir/OBA/ACIS_HTG_1022");
-#system("mv $web_dir/OBA/ACIS_HTG_1022/*gif $web_dir/EdE_Plots");
+system("$op_dir/perl $bin_dir/ede_oba.perl $out_dir/EdE_Data/acis_htg_1022_data_new $out_dir/OBA/ACIS_HTG_1022");
+#system("mv $out_dir/OBA/ACIS_HTG_1022/*gif $out_dir/EdE_Plots");
 #
 #---- acis hetg hrma temperature relation plotting starts here
 #
-system("$op_dir/perl $bin_dir/ede_hrma.perl $web_dir/EdE_Data/acis_htg_1022_data_new $web_dir/HRMA/ACIS_HTG_1022");
-#system("mv $web_dir/HRMA/ACIS_HTG_1022/*gif $web_dir/EdE_Plots");
+system("$op_dir/perl $bin_dir/ede_hrma.perl $out_dir/EdE_Data/acis_htg_1022_data_new $out_dir/HRMA/ACIS_HTG_1022");
+#system("mv $out_dir/HRMA/ACIS_HTG_1022/*gif $out_dir/EdE_Plots");
 
 
 
@@ -95,22 +137,24 @@ $grat = mtg;
 foreach $line (@mtg_list){
 	$nline = $line;
 	$nline =~ s/\.//g;
-	$data_file = "$web_dir".'/EdE_Data/acis_mtg_'."$nline".'_data';
-	system("$op_dir/perl $bin_dir/ede_find_value.perl $line $grat $data_file");
-	system("$op_dir/perl $bin_dir/ede_plot.perl $data_file $line");
-	system("$op_dir/perl $bin_dir/ede_comp_stat.perl $data_file $line");
+	$data_file = "$out_dir".'/EdE_Data/acis_mtg_'."$nline".'_data';
+	system("perl         $bin_dir/ede_find_value.perl $line $grat $data_file $comp_test");
+	system("$op_dir/perl $bin_dir/ede_plot.perl       $data_file  $line");
+	system("perl         $bin_dir/ede_comp_stat.perl  $data_file  $line");
 }
-system("mv $web_dir/EdE_Data/*gif $web_dir/EdE_Plots");
+
+system("mv $out_dir/EdE_Data/*gif $out_dir/EdE_Plots");
+
 #
 #---- acis metg oba temperature relation plotting starts here
 #
-system("$op_dir/perl $bin_dir/ede_oba.perl $web_dir/EdE_Data/acis_mtg_1022_data_new $web_dir/OBA/ACIS_MTG_1022");
-#system("mv $web_dir/OBA/ACIS_MTG_1022/*gif $web_dir/EdE_Plots");
+system("$op_dir/perl $bin_dir/ede_oba.perl $out_dir/EdE_Data/acis_mtg_1022_data_new $out_dir/OBA/ACIS_MTG_1022");
+#system("mv $out_dir/OBA/ACIS_MTG_1022/*gif $out_dir/EdE_Plots");
 #
 #---- acis hetg hrma temperature relation plotting starts here
 #
-system("$op_dir/perl $bin_dir/ede_hrma.perl $web_dir/EdE_Data/acis_mtg_1022_data_new $web_dir/HRMA/ACIS_MTG_1022");
-#system("mv $web_dir/HRMA/ACIS_MTG_1022/*gif $web_dir/EdE_Plots");
+system("$op_dir/perl $bin_dir/ede_hrma.perl $out_dir/EdE_Data/acis_mtg_1022_data_new $out_dir/HRMA/ACIS_MTG_1022");
+#system("mv $out_dir/HRMA/ACIS_MTG_1022/*gif $out_dir/EdE_Plots");
 
 
 
@@ -128,55 +172,64 @@ $grat = ltg;
 foreach $line (@ltg_list){
 	$nline = $line;
 	$nline =~ s/\.//g;
-	$data_file = "$web_dir".'/EdE_Data/hrc_ltg_'."$nline".'_data';
-	system("$op_dir/perl $bin_dir/ede_find_value.perl $line $grat $data_file");
-	system("$op_dir/perl $bin_dir/ede_plot.perl $data_file $line");
-	system("$op_dir/perl $bin_dir/ede_comp_stat.perl $data_file $line");
+	$data_file = "$out_dir".'/EdE_Data/hrc_ltg_'."$nline".'_data';
+	system("perl         $bin_dir/ede_find_value.perl $line $grat $data_file $comp_test");
+	system("$op_dir/perl $bin_dir/ede_plot.perl       $data_file  $line");
+	system("perl         $bin_dir/ede_comp_stat.perl  $data_file  $line");
 }
-system("mv $web_dir/EdE_Data/*gif $web_dir/EdE_Plots");
+
+system("mv $out_dir/EdE_Data/*gif $out_dir/EdE_Plots");
+
 #
 #---- hrc letg oba temperature relation plotting starts here
 #
-system("$op_dir/perl $bin_dir/ede_oba.perl $web_dir/EdE_Data/hrc_ltg_1022_data_new $web_dir/OBA/HRC_LTG_1022");
-#system("mv $web_dir/OBA/HRC_LTG_1022/*gif $web_dir/EdE_Plots");
+system("$op_dir/perl $bin_dir/ede_oba.perl $out_dir/EdE_Data/hrc_ltg_1022_data_new $out_dir/OBA/HRC_LTG_1022");
+#system("mv $out_dir/OBA/HRC_LTG_1022/*gif $out_dir/EdE_Plots");
 #
 #---- hrc letg hrma temperature relation plotting starts here
 #
-system("$op_dir/perl $bin_dir/ede_hrma.perl $web_dir/EdE_Data/hrc_ltg_1022_data_new $web_dir/HRMA/HRC_LTG_1022");
-#system("mv $web_dir/HRMA/HRC_LTG_1022/*gif $web_dir/EdE_Plots");
+system("$op_dir/perl $bin_dir/ede_hrma.perl $out_dir/EdE_Data/hrc_ltg_1022_data_new $out_dir/HRMA/HRC_LTG_1022");
+#system("mv $out_dir/HRMA/HRC_LTG_1022/*gif $out_dir/EdE_Plots");
 #
-#---- move time trend statistics web page to the web direcotry
+#---- complete and  move time trend statistics web page to the web direcotry
 #
-system("mv stat_result.html $web_dir/stat_result.html");
+open(OUT, '>>stat_result.html');
+print OUT "\n</table>\n";
+print OUT "</div>\n";
+print OUT "</body>\n";
+print OUT "</html>\n";
+close(OUT);
+
+system("mv stat_result.html $out_dir/stat_result.html");
 
 #
 #--- compute OBA/HRMA statistics and create web pages
 #
-system("$op_dir/perl $bin_dir/ede_mk_stat_table.perl $web_dir/OBA/ACIS_HTG_1022/");
-system("mv stat_out.html $web_dir/OBA/acis_htg_stat.html");
+system("perl $bin_dir/ede_mk_stat_table.perl $out_dir/OBA/ACIS_HTG_1022/ $comp_test");
+system("mv stat_out.html $out_dir/OBA/acis_htg_stat.html");
 
-system("$op_dir/perl $bin_dir/ede_mk_stat_table.perl $web_dir/OBA/ACIS_MTG_1022/");
-system("mv stat_out.html $web_dir/OBA/acis_mtg_stat.html");
+system("perl $bin_dir/ede_mk_stat_table.perl $out_dir/OBA/ACIS_MTG_1022/ $comp_test");
+system("mv stat_out.html $out_dir/OBA/acis_mtg_stat.html");
 
-system("$op_dir/perl $bin_dir/ede_mk_stat_table.perl $web_dir/OBA/HRC_LTG_1022/");
-system("mv stat_out.html $web_dir/OBA/hrc_ltg_stat.html");
+system("perl $bin_dir/ede_mk_stat_table.perl $out_dir/OBA/HRC_LTG_1022/ $comp_test");
+system("mv stat_out.html $out_dir/OBA/hrc_ltg_stat.html");
 
 
-system("$op_dir/perl $bin_dir/ede_mk_stat_table.perl $web_dir/HRMA/ACIS_HTG_1022/");
-system("mv stat_out.html $web_dir/HRMA/acis_htg_stat2.html");
+system("perl $bin_dir/ede_mk_stat_table.perl $out_dir/HRMA/ACIS_HTG_1022/ $comp_test");
+system("mv stat_out.html $out_dir/HRMA/acis_htg_stat2.html");
 
-system("$op_dir/perl $bin_dir/ede_mk_stat_table.perl $web_dir/HRMA/ACIS_MTG_1022/");
-system("mv stat_out.html $web_dir/HRMA/acis_mtg_stat2.html");
+system("perl $bin_dir/ede_mk_stat_table.perl $out_dir/HRMA/ACIS_MTG_1022/ $comp_test");
+system("mv stat_out.html $out_dir/HRMA/acis_mtg_stat2.html");
 
-system("$op_dir/perl $bin_dir/ede_mk_stat_table.perl $web_dir/HRMA/HRC_LTG_1022/");
-system("mv stat_out.html $web_dir/HRMA/hrc_ltg_stat2.html");
+system("perl $bin_dir/ede_mk_stat_table.perl $out_dir/HRMA/HRC_LTG_1022/ $comp_test");
+system("mv stat_out.html $out_dir/HRMA/hrc_ltg_stat2.html");
 
 #
 #--- plotting oba example
 #
 
 system("$op_dir/perl $bin_dir/ede_oba_example.perl");
-system("mv oba_example.gif $web_dir/EdE_Plots/");
+system("mv oba_example.gif $out_dir/EdE_Plots/");
 
 #
 #--- chage the "update" date on each html page to today's date
@@ -197,7 +250,7 @@ if($umday < 10){
 
 $line = "Last Updated: $pmonth $pday, $uyear";
 
-open(FH, "$web_dir/ede_trend.html");
+open(FH, "$out_dir/ede_trend.html");
 @save = ();
 while(<FH>){
 	chomp $_;
@@ -209,14 +262,14 @@ while(<FH>){
 }
 close(FH);
 
-open(OUT, ">$web_dir/ede_trend.html");
+open(OUT, ">$out_dir/ede_trend.html");
 foreach $ent (@save){
 	print OUT "$ent\n";
 }
 close(OUT);
 
 
-open(FH, "$web_dir/ede_time.html");
+open(FH, "$out_dir/ede_time.html");
 @save = ();
 while(<FH>){
 	chomp $_;
@@ -228,13 +281,13 @@ while(<FH>){
 }
 close(FH);
 
-open(OUT, ">$web_dir/ede_time.html");
+open(OUT, ">$out_dir/ede_time.html");
 foreach $ent (@save){
 	print OUT "$ent\n";
 }
 close(OUT);
 
-open(FH, "$web_dir/ede_temp.html");
+open(FH, "$out_dir/ede_temp.html");
 @save = ();
 while(<FH>){
 	chomp $_;
@@ -246,13 +299,13 @@ while(<FH>){
 }
 close(FH);
 
-open(OUT, ">$web_dir/ede_temp.html");
+open(OUT, ">$out_dir/ede_temp.html");
 foreach $ent (@save){
 	print OUT "$ent\n";
 }
 close(OUT);
 
-system("rm $web_dir/EdE_Data/*_new");
+system("rm $out_dir/EdE_Data/*_new");
 
 
 ###################################################################
