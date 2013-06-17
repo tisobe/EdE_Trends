@@ -1,4 +1,4 @@
-#/usr/bin/perl
+#!/usr/bin/env /usr/local/bin/perl
 
 #########################################################################################
 #											#
@@ -6,7 +6,7 @@
 #											#
 #	author: t. isobe (tisobe@cfa.harvard.edu)					#
 #											#
-#	last update: Mar 08, 2013							#
+#	last update: Jun 05, 2013							#
 #											#
 #########################################################################################
 #
@@ -103,9 +103,9 @@ foreach $line (@htg_list){
 	$nline =~ s/\.//g;
 	$data_file = "$out_dir".'/EdE_Data/acis_htg_'."$nline".'_data';
 
-	system("perl         $bin_dir/ede_find_value.perl $line $grat $data_file $comp_test");	# get data
+	system("$op_dir/perl $bin_dir/ede_find_value.perl $line $grat $data_file $comp_test");	# get data
 	system("$op_dir/perl $bin_dir/ede_plot.perl       $data_file  $line");			# plot time - ede relation
-	system("perl         $bin_dir/ede_comp_stat.perl  $data_file  $line");			# compute correlation prob
+	system("$op_dir/perl $bin_dir/ede_comp_stat.perl  $data_file  $line");			# compute correlation prob
 }
 
 system("mv $out_dir/EdE_Data/*gif $out_dir/EdE_Plots");
@@ -138,9 +138,9 @@ foreach $line (@mtg_list){
 	$nline = $line;
 	$nline =~ s/\.//g;
 	$data_file = "$out_dir".'/EdE_Data/acis_mtg_'."$nline".'_data';
-	system("perl         $bin_dir/ede_find_value.perl $line $grat $data_file $comp_test");
+	system("$op_dir/perl $bin_dir/ede_find_value.perl $line $grat $data_file $comp_test");
 	system("$op_dir/perl $bin_dir/ede_plot.perl       $data_file  $line");
-	system("perl         $bin_dir/ede_comp_stat.perl  $data_file  $line");
+	system("$op_dir/perl $bin_dir/ede_comp_stat.perl  $data_file  $line");
 }
 
 system("mv $out_dir/EdE_Data/*gif $out_dir/EdE_Plots");
@@ -173,9 +173,9 @@ foreach $line (@ltg_list){
 	$nline = $line;
 	$nline =~ s/\.//g;
 	$data_file = "$out_dir".'/EdE_Data/hrc_ltg_'."$nline".'_data';
-	system("perl         $bin_dir/ede_find_value.perl $line $grat $data_file $comp_test");
+	system("$op_dir/perl $bin_dir/ede_find_value.perl $line $grat $data_file $comp_test");
 	system("$op_dir/perl $bin_dir/ede_plot.perl       $data_file  $line");
-	system("perl         $bin_dir/ede_comp_stat.perl  $data_file  $line");
+	system("$op_dir/perl $bin_dir/ede_comp_stat.perl  $data_file  $line");
 }
 
 system("mv $out_dir/EdE_Data/*gif $out_dir/EdE_Plots");
@@ -305,7 +305,7 @@ foreach $ent (@save){
 }
 close(OUT);
 
-system("rm $out_dir/EdE_Data/*_new");
+system("rm -rf $out_dir/EdE_Data/*_new");
 
 
 ###################################################################

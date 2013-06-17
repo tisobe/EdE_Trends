@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env /usr/local/bin/perl
 use PGPLOT;
 
 #########################################################################################
@@ -7,7 +7,7 @@ use PGPLOT;
 #											#
 #	author: t. isobe (tisobe@cfa.harvard.edu)					#
 #											#
-#	last update: Mar 08, 2013							#
+#	last update: Jun 05, 2013							#
 #											#
 #########################################################################################
 
@@ -129,8 +129,8 @@ pgclos();
 
 $out_plot = "oba_example.gif";
 
-system("echo ''|gs -sDEVICE=ppmraw  -r256x256 -q -NOPAUSE -sOutputFile=-  ./pgplot.ps|pnmcrop| pnmflip -r270 |ppmtogif > $out_plot");
-system("rm pgplot.ps");
+system("echo ''|gs -sDEVICE=ppmraw  -r256x256 -q -NOPAUSE -sOutputFile=-  ./pgplot.ps|pnmflip -r270 |ppmtogif > $out_plot");
+system("rm -rf pgplot.ps");
 
 ############################################################
 ### change_month_format: change month format             ###

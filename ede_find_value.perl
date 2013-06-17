@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl
+#!/usr/bin/env /usr/local/bin/perl
  
 ###### BEGIN { $ENV{'SYBASE'} = "/soft/SYBASE_OCS15"; }
 use DBI;
@@ -10,7 +10,7 @@ use DBD::Sybase;
 #											#
 #	author:	t. isobe (tisobe@cfa.harvard.edu)					#
 #											#
-#	last update: Mar 08, 2013							#
+#	last update: Jun 05, 2013							#
 #											#
 #########################################################################################
 #
@@ -206,7 +206,7 @@ foreach $time (@temp){
 	print OUT2 "${data.$time}{data}[0]\n";
 }
 
-system("rm temp");
+system("rm -rf temp");
 
 
 ################################################################################
@@ -225,7 +225,7 @@ sub read_databases{
 #       $db_user="browser";
 #       $server="sqlbeta";
 
-        $db_passwd =`cat /proj/web-icxc/cgi-bin/obs_ss/.Pass_dir/.targpass`;
+        $db_passwd =`cat /data/mta4/CUS/www/Usint/Pass_dir/.targpass`;
         chop $db_passwd;
 
 #--------------------------------------

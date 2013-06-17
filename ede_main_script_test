@@ -1,13 +1,17 @@
-source /home/mta/.ascrc
+source /home/mta/.ascrc 
+
 
 cd /data/mta/Script/Grating/EdE/Exc
 rm -rf param
 mkdir param
 
+unsetenv PERLLIB
+unsetenv PERL5LIB
+
 source /home/mta/bin/reset_param
+
 set path = (/home/ascds/DS.release/bin/  $path)
-set path = (/home/ascds/DS.release/otsbin/  $path)
+set path = (/home/ascds/DS.release/ots/bin/ $path)
 
-
-/opt/local/bin/perl /data/mta/Script/Grating/EdE/EdE_Trends/ede_main.perl test
+/usr/local/bin/perl /data/mta/Script/Grating/EdE/EdE_Trends/ede_main.perl test
 

@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env /usr/local/bin/perl
 use PGPLOT;
 
 #########################################################################################
@@ -7,7 +7,7 @@ use PGPLOT;
 #											#
 #	author: t. isobe (tisobe@cfa.harvard.edu)					#
 #											#
-#	last update: Mar 08, 2013							#
+#	last update: Jun 05, 2013							#
 #											#
 #########################################################################################
 
@@ -282,7 +282,7 @@ foreach $msid (@list){
 	
 		$out_plot = "$out_dir/".'hrma_'."$tot_cnt".'.gif';
 	
-		system("echo ''|gs -sDEVICE=ppmraw  -r256x256 -q -NOPAUSE -sOutputFile=-  ./pgplot.ps|pnmcrop| pnmflip -r270 |ppmtogif > $out_plot");
+		system("echo ''|gs -sDEVICE=ppmraw  -r256x256 -q -NOPAUSE -sOutputFile=-  ./pgplot.ps|pnmflip -r270 |ppmtogif > $out_plot");
 		system("rm pgplot.ps");
 	}else{
 		$plt_cnt++;

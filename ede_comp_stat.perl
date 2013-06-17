@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env /usr/local/bin/perl
 
 #########################################################################################
 #											#
@@ -6,7 +6,7 @@
 #											#
 #	author: t. isobe (tisobe@cfa.harvard.edu)					#
 #											#
-#	last update: Feb 14, 2006							#
+#	last update: Apr 22, 2013							#
 #											#
 #########################################################################################
 
@@ -97,7 +97,7 @@ $prob_p = sprintf "%3.2f", $prob;
 #
 
 @atemp = split(/EdE_Data/, $file);
-$data_file  = 'http://cxc.harvard.edu/mta_days/mta_grat/EdE_trend/EdE_Data/'."$atemp[1]";
+$data_file  = 'https://cxc.cfa.harvard.edu/mta_days/mta_grat/EdE_trend/EdE_Data/'."$atemp[1]";
 
 open(OUT, ">>stat_result.html");
 print OUT "<tr><td>$line</td><td>$pslope+/-$std</td><td align='center'>$rslope</td><td align='center'>$prob_p</td>\n";
