@@ -1,8 +1,6 @@
 
 Scripts in this directory create an E/dE trend page plots, table, and the page itself.
 
-This job must be run on "rhodes", since it needs to access to dataseeker
-
 In a directory of /data/mta/Script/Grating/EdE_Trends:
 
 ---------------
@@ -12,9 +10,9 @@ A wrapping script to run ede_main_script
 
 
 ---------------
-ede_main_script
+ede_main__script
 ---------------
-A main script to perl script ede_main.perl
+A main script to perl script ede_main.perl and ede_plot.py
 
 
 -------------
@@ -138,11 +136,27 @@ Output:	example: EdE_Data/acis_htg_0824_data
 This script used manually to clean up data.
 
 
---------
-Makefile
---------
-make file
+---------------------
+plot_capella_ede.perl
+---------------------
+This script plot E/dE vs DOM specifically for Capella data saved on 
+/data/mta/Script/Grating/EdE/Capplla.
 
+Input: data file such as acis_hetg.dat (read /data/mta/Script/Grating/EdE/Capplla/table for more details).
+Output: plot_lines.gif
+
+This script must be run on rhodes with /opt/local/bin/perl as it uses PGPLOT perl module
+
+
+############### NEW SCRPITS ########################
+
+-----------
+ede_plot.py
+-----------
+plotting evolution of EdE for ACIS S and HRC S grating obs
+
+Input: /data/mta_www/mta_grat/EdE_trend/EdE_Data/*_data
+Output: /data/mta_www/mta_grat/EdE_trend/EdE_Plots/*png
 
 ------
 README
@@ -157,7 +171,7 @@ Directories and files outside of this directory
 
 /data/mta/Script/Grating/Exc:		run directory
 
-$bin_dir = '/data/mta/MTA/bin/';		bin directory	 (need to run on rhodes)
+$bin_dir = '/data/mta4/MTA/bin/';		bin directory	 (need to run on rhodes)
 $web_dir = '/data/mta_www/mta_grat/EdE_trend/';	Web direcotry
 			---- these two directories can be changed in ede_main.perl
 
@@ -208,5 +222,5 @@ $web_dir/Template			keeps copies of html pages, just in a case the others are lo
 Cron Job
 ---------
 
-0 9 * * 0    cd /data/mta/Script/Grating/Exc; /data/mta/MTA/bin/ede_wrap_script      
-	run every Sunday morning 9am on r2d2
+30 9 * * 0  cd /data/mta/Script/Grating/EdE/Exc; /data/mta/Script/Grating/EdE/EdE_Trends/ede_wrap_script      >> $HOME/Logs/ede_trends 2>&1
+
