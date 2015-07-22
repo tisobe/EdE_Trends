@@ -7,7 +7,7 @@ use PGPLOT;
 #													#
 #		author: t. isobe (tisobe@cfa.harvard.edu)						#
 #													#
-#		last update: Arp 22, 2013								#
+#		last update: May 27, 2015								#
 #													#
 #########################################################################################################
 
@@ -23,14 +23,14 @@ use PGPLOT;
 #
 # the name of the lines are give second input to fifth input. The last line is ignored.
 #
-
+#---- perl plot_capella_ede.perl acis_metg.dat  0.825 1.011 1.472 1.864
+#---- perl plot_capella_ede.perl acis_hetg.dat  0.812 0.825 0.873 1.011
+#---- perl plot_capella_ede.perl hrc_letg.dat   0.728 0.771 0.825 0.873
 
 #
 #--- save all data
 #
-
 $file   = $ARGV[0];		#---- data file name
-
 $line1  = $ARGV[1];		#---- line names
 $line2  = $ARGV[2];
 $line3  = $ARGV[3];
@@ -41,7 +41,11 @@ $line5  = $ARGV[5];
 #--- save all data points including 1999 data
 #
 
-@time   = ();
+@time1  = ();
+@time2  = ();
+@time3  = ();
+@time4  = ();
+@time5  = ();
 
 @eline1 = ();
 @eline2 = ();
@@ -55,13 +59,21 @@ $line5  = $ARGV[5];
 @error4 = ();
 @error5 = ();
 
-$cnt  = 0;
+$cnt1  = 0;
+$cnt2  = 0;
+$cnt3  = 0;
+$cnt4  = 0;
+$cnt5  = 0;
 
 #
 #--- save data year > 1999
 #
 
-@timep  = ();
+@timep1  = ();
+@timep2  = ();
+@timep3  = ();
+@timep4  = ();
+@timep5  = ();
 
 @eline1p = ();
 @eline2p = ();
@@ -75,7 +87,11 @@ $cnt  = 0;
 @error4p = ();
 @error5p = ();
 
-$cntp = 0;
+$cntp1 = 0;
+$cntp2 = 0;
+$cntp3 = 0;
+$cntp4 = 0;
+$cntp5 = 0;
 
 #
 #--- read the data
@@ -84,46 +100,87 @@ $cntp = 0;
 open(FH, "$file");
 OUTER:
 while(<FH>){
-	if($_ =~ /na/i){
-		next OUTER;
-	}
-
 	chomp $_;
 	@atemp = split(/\s+/, $_);
-	push(@eline1, $atemp[1]);
-	push(@error1, $atemp[2]);
-	push(@eline2, $atemp[3]);
-	push(@error2, $atemp[4]);
-	push(@eline3, $atemp[5]);
-	push(@error3, $atemp[6]);
-	push(@eline4, $atemp[7]);
-	push(@error4, $atemp[8]);
-	push(@eline5, $atemp[9]);
-	push(@error5, $atemp[10]);
-
 	$dom = ch_time_form_to_dom($atemp[11]);
+#
+#--- drop "na" entries
+#
+    if($atemp[1] != 'na'){
+	    push(@time1,  $dom);
+	    push(@eline1, $atemp[1]);
+	    push(@error1, $atemp[2]);
+        $cnt1++;
+    }
 
-	push(@time,  $dom);
-	$cnt++;
+    if($atemp[3] != 'na'){
+	    push(@time2,  $dom);
+	    push(@eline2, $atemp[3]);
+	    push(@error2, $atemp[4]);
+        $cnt2++;
+    }
+
+    if($atemp[5] != 'na'){
+	    push(@time3,  $dom);
+	    push(@eline3, $atemp[5]);
+	    push(@error3, $atemp[6]);
+        $cnt3++;
+    }
+
+    if($atemp[7] != 'na'){
+	    push(@time4,  $dom);
+	    push(@eline4, $atemp[7]);
+	    push(@error4, $atemp[8]);
+        $cnt4++;
+    }
+
+    if($atemp[9] != 'na'){
+	    push(@time5,  $dom);
+	    push(@eline5, $atemp[9]);
+	    push(@error5, $atemp[10]);
+        $cnt5++;
+    }
 	
 #
 #--- save data with year > 1999
 #
 	if($atemp[11] !~ /1999/){
-		push(@eline1p, $atemp[1]);
-		push(@error1p, $atemp[2]);
-		push(@eline2p, $atemp[3]);
-		push(@error2p, $atemp[4]);
-		push(@eline3p, $atemp[5]);
-		push(@error3p, $atemp[6]);
-		push(@eline4p, $atemp[7]);
-		push(@error4p, $atemp[8]);
-		push(@eline5p, $atemp[9]);
-		push(@error5p, $atemp[10]);
-	
+
 		$dom = ch_time_form_to_dom($atemp[11]);
-		push(@timep,  $dom);
-		$cntp++;
+        if($atemp[1] != 'na'){
+	        push(@time1p,  $dom);
+	        push(@eline1p, $atemp[1]);
+	        push(@error1p, $atemp[2]);
+            $cnt1p++;
+        }
+    
+        if($atemp[3] != 'na'){
+	        push(@time2p,  $dom);
+	        push(@eline2p, $atemp[3]);
+	        push(@error2p, $atemp[4]);
+            $cnt2p++;
+        }
+    
+        if($atemp[5] != 'na'){
+	        push(@time3p,  $dom);
+	        push(@eline3p, $atemp[5]);
+	        push(@error3p, $atemp[6]);
+            $cnt3p++;
+        }
+    
+        if($atemp[7] != 'na'){
+	        push(@time4p,  $dom);
+	        push(@eline4p, $atemp[7]);
+	        push(@error4p, $atemp[8]);
+            $cnt4p++;
+        }
+    
+        if($atemp[9] != 'na'){
+	        push(@time5p,  $dom);
+	        push(@eline5p, $atemp[9]);
+	        push(@error5p, $atemp[10]);
+            $cnt5p++;
+        }
 	}
 }
 close(FH);
@@ -143,13 +200,59 @@ $tick = 0;			#--- plot option indicator
 #--- set data point plotting  parameters
 #
 
-@date = @time;
-$total= $cnt;
+#
+#--- find global min and max for the plotting area
+#
 
-@temp  = sort{$a<=>$b} @time;
-
+@temp  = sort{$a<=>$b} @time1;
 $xmin  = $temp[0];
 $xmax  = $temp[$total-1];
+
+@temp  = sort{$a<=>$b} @time2;
+$xmint = $temp[0];
+$xmaxt = $temp[$total-1];
+
+if($xmint < $xmin){
+    $xmin = $xmint;
+}
+if($xmaxt > $xmax){
+    $xmax = $xmaxt;
+}
+
+@temp  = sort{$a<=>$b} @time3;
+$xmint = $temp[0];
+$xmaxt = $temp[$total-1];
+
+if($xmint < $xmin){
+    $xmin = $xmint;
+}
+if($xmaxt > $xmax){
+    $xmax = $xmaxt;
+}
+
+@temp  = sort{$a<=>$b} @time4;
+$xmint = $temp[0];
+$xmaxt = $temp[$total-1];
+
+if($xmint < $xmin){
+    $xmin = $xmint;
+}
+if($xmaxt > $xmax){
+    $xmax = $xmaxt;
+}
+
+@temp  = sort{$a<=>$b} @time5;
+$xmint = $temp[0];
+$xmaxt = $temp[$total-1];
+
+if($xmint < $xmin){
+    $xmin = $xmint;
+}
+if($xmaxt > $xmax){
+    $xmax = $xmaxt;
+}
+
+
 $xdiff = $xmax - $xmin;
 $xmin -= 0.1 * $xdiff;
 
@@ -167,10 +270,12 @@ $xbot  = $xmin - 0.07 * $xdiff;
 #--- set data for line fitting (data with year > 1999)
 #
 
-@x    = @timep;
-$tot  = $cntp;
-
 pgsvp(0.1, 1.0, 0.77, 1.00);
+
+@date = @time1;
+$total= $cnt1;
+@x    = @time1p;
+$tot  = $cnt1p;
 @data = @eline1;		#--- data point y
 @err  = @error1;		#--- error of y
 
@@ -182,6 +287,11 @@ $energy = $line1;		#--- the name of the line
 plot_data();			#--- plotting routine
 
 pgsvp(0.1, 1.0, 0.53, 0.76);
+
+@date = @time2;
+$total= $cnt2;
+@x    = @time2p;
+$tot  = $cnt2p;
 @data = @eline2;
 @err  = @error2;
 
@@ -196,6 +306,11 @@ plot_data();
 $tick = 0;
 
 pgsvp(0.1, 1.0, 0.29, 0.52);
+
+@date = @time3;
+$total= $cnt3;
+@x    = @time3p;
+$tot  = $cnt3p;
 @data = @eline3;
 @err  = @error3;
 
@@ -207,6 +322,11 @@ $energy = $line3;
 plot_data();
 
 pgsvp(0.1, 1.0, 0.05, 0.28);
+
+@date = @time4;
+$total= $cnt4;
+@x    = @time4p;
+$tot  = $cnt4p;
 @data = @eline4;
 @err  = @error4;
 
@@ -228,6 +348,7 @@ $out_plot = 'plot_lines.gif';
 system("echo ''|gs -sDEVICE=ppmraw  -r256x256 -q -NOPAUSE -sOutputFile=-  ./pgplot.ps|pnmflip -r270 |ppmtogif > $out_plot");
 
 system("rm -rf pgplot.ps");
+
 
 
 ##################################################################################

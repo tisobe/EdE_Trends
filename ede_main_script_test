@@ -5,13 +5,7 @@ cd /data/mta/Script/Grating/EdE/Exc
 rm -rf param
 mkdir param
 
-unsetenv PERLLIB
-unsetenv PERL5LIB
-
 source /home/mta/bin/reset_param
-
-set path = (/home/ascds/DS.release/bin/  $path)
-set path = (/home/ascds/DS.release/ots/bin/ $path)
 
 /usr/local/bin/perl /data/mta/Script/Grating/EdE/EdE_Trends/ede_main.perl test
 
